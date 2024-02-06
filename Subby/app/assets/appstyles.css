@@ -1,0 +1,262 @@
+:root{
+	--c1: rgb(32,44,57);
+	--transparentWhite: rgba(255, 255, 255, 0.7);
+}
+
+*{margin:0px; padding: 0px; box-sizing: border-box;}
+
+.appPage{
+	height:100vh;
+	width:100%;
+	display: flex;
+	background: url("/app/assets/appbg.png");
+	background: url("/app/assets/bg2a.jpg");
+	background-size: cover;
+	background-position: center;
+}
+
+.split{
+	display: flex;
+	justify-content: space-between;
+	width:100%;
+	margin: 0px 0px 25px 0px;
+}
+
+
+.core{
+	display: flex;
+	flex-direction: column;
+	flex:1;
+	padding:30px;
+}
+
+.btn1{
+	background-color: rgb(66, 133, 244);
+	color:white;
+	padding: 10px 20px;
+	font-size: 20px;
+	font-family: sans-serif;
+	border-radius: 10px;
+	border: 0px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	text-align: center;
+}
+
+.btn1:hover{
+	background-color: rgb(54, 112, 205);
+}
+
+
+.addButton{
+	position: relative;
+}
+
+.addMenu {
+	position: absolute;
+	background-color: rgba(255, 255, 255);
+	width:300px;
+	right:0px;
+	top: 70px;
+	z-index: 69;
+	border-radius: 10px;
+	padding:15px;
+	font-family: sans-serif;
+	box-shadow: 0px 0px 35px 10px rgba(0,0,0,0.53);
+}
+
+.specialNumerInput::-webkit-outer-spin-button,
+.specialNumerInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.specialNumerInput[type=number] {
+  -moz-appearance: textfield;
+}
+
+
+.niceBorder1{
+	border-radius:10px; 
+	border: 1px solid rgba(33, 33, 33, 0.123); 
+	display:flex; 
+	flex-direction:column; 
+	padding: 10px; 
+	margin: 0px 0px 10px 0px;
+}
+
+.toBlur{
+	transition: filter 0.3s ease-in-out;
+}
+
+
+/* ============== Fonts ============== */
+.fontStyle1{
+	color: var(--c1);
+	font-size: 25px;
+	font-family: sans-serif;
+}
+.fontStyle2{
+	color: var(--c1);
+	font-size: 23px;
+	font-family: sans-serif;
+}
+
+
+
+/* ============== Left Menu ============== */
+
+.leftMenu{
+	width:300px;
+	border-right: 1px solid rgba(255, 255, 255, 0.2);
+	padding:30px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.leftMenu .upperLeftSection .logo{
+	margin:0px 0px 20px 0px;
+	display: flex;
+	align-items: center;
+	font-size: 30px;
+}
+
+.userWelcome{
+	text-decoration: none;
+	color: var(--c1);
+	font-family: sans-serif;
+	margin: 0px 0px 50px 0px;
+}
+
+.leftMenu .upperLeftSection .menuItem{
+	margin: 0px 0px 20px 0px;
+}
+.leftMenu .upperLeftSection .menuItem a{
+	text-decoration: none;
+	color: var(--c1);
+	font-family: sans-serif;
+}
+
+.leftMenu .bottomLeftSection .menuItem{
+	margin: 20px 0px 0px 0px;
+}
+
+.leftMenu .bottomLeftSection .menuItem a{
+	text-decoration: none;
+	color: var(--c1);
+	font-family: sans-serif;
+}
+
+.logOutButton{
+	margin: 50px 0px 0px 0px;
+}
+
+.logOutButton a{
+	text-decoration: none;
+	color: var(--c1);
+	font-family: sans-serif;
+}
+
+
+
+/* ============== Home ============== */
+.row{
+	display: flex;
+}
+
+.overviewItem{
+	padding:20px;
+	background-color: rgba(255, 255, 255, 0.5);
+	border-radius: 10px;
+	backdrop-filter: blur(5px);
+	flex:1;
+}
+
+.overviewItem:nth-child(2){
+	margin: 0px 20px;
+}
+
+.overviewItem:nth-child(3){
+	margin: 0px 20px 0px 0px;
+}
+.overviewItem:last-child{
+	margin: 0px 0px 0px 20px;
+
+}
+
+
+
+/* ============== All Items ============== */
+
+.allItemsRow{
+	font-family: sans-serif;
+}
+
+.allItemsRow td:first-child{
+	padding: 10px;
+	background-color: var(--transparentWhite);
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+}
+
+.allItemsRow td:not(:first-child):not(:last-child){
+	padding: 10px;
+	background-color: var(--transparentWhite);
+}
+
+.allItemsRow td:nth-last-child(2){
+	padding: 10px;
+	background-color: var(--transparentWhite);
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+
+.optionsCog{
+	opacity: 0.2;
+	cursor: pointer;
+	transition: all 0.2s ease-in-out;
+}
+
+
+
+.optionsCell:hover .optionsCog{
+	opacity: 1;
+	transform: scale(1.1);
+}
+
+.optionsCell{
+	position: relative;
+}
+
+.optionsDropDown{
+	display: none;
+	background-color: white;
+	padding:10px;
+	border-radius: 10px;
+	position: absolute;
+	z-index: 2;
+	top:0px;
+	right:0px;
+}
+
+.optionsCell:hover .optionsDropDown{
+	display: block;
+}
+
+.optionEdit, .optionDelete{
+	cursor: pointer;
+	padding: 5px 10px;
+	border-radius: 5px;
+	color:white;
+	border: 0px;
+}
+
+.optionEdit{
+	background-color: rgb(61, 143, 213);
+	margin: 0px 0px 10px 0px;
+}
+
+.optionDelete{
+	background-color: rgb(216, 41, 41);
+}
