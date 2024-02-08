@@ -1,4 +1,4 @@
-Hello world!
+<title>Hello world!</title>
 
 What?
 Subby is a special personal project of mine. It is a website to help keep track of upcoming reoccuring costs, eg drivers license, insurance etc...
