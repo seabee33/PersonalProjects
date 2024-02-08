@@ -12,10 +12,6 @@ function printFrequencyOptions($conn){
 }
 
 
-
-
-
-
 function loginCheck(){
 	if(isset($_SESSION['loggedIn'])){
 		if($_SESSION['loggedIn'] != TRUE){
@@ -34,13 +30,9 @@ function name(){
 
 function viewAllSubscriptions($conn){
 
-	$listItems = ['itemName' => [], 'itemPrice' => [], 'frequency' => [], 'futureDate' => [], 'countdownDays'];
+	$listItems = ['itemID', 'itemName' => [], 'itemPrice' => [], 'frequency' => [], 'futureDate' => [], 'frequencyCount' => [], 'countdownDays'];
 
-	// $allSubscriptions = $conn->prepare("SELECT user_items.next_payment_date, items.item_name, user_items.item_price, user_items.payment_frequency, user_items.payment_frequency_count FROM user_items
-	// INNER JOIN items ON user_items.item_id=items.id 
-	// WHERE user_items.created_by_user=?");    OLD COMMAND TO GET ITEM ID
-
-	$allSubscriptions = $conn->prepare("SELECT next_payment_date, custom_item_name, item_price, payment_frequency, payment_frequency_count FROM user_items WHERE user_items.created_by_user=?");
+	$allSubscriptions = $conn->prepare("SELECT id, next_payment_date, custom_item_name, item_price, payment_frequency, payment_frequency_count FROM user_items WHERE user_items.created_by_user=?");
 	$allSubscriptions->bind_param("s", $_SESSION['userID']);
 	$allSubscriptions->execute();
 	$result = $allSubscriptions->get_result();
@@ -48,21 +40,33 @@ function viewAllSubscriptions($conn){
 	if($result->num_rows != 0){
 
 		while ($rowData = $result->fetch_assoc()){
+			$subID = $rowData['id'];
 			$rawPaymentDate = $rowData['next_payment_date'];
 			$subName = $rowData['custom_item_name'];
 			$subPrice = '$' . number_format($rowData['item_price'], 2);
 			$paymentFrequency = $rowData['payment_frequency'];
 			$paymentFrequencyCount = $rowData['payment_frequency_count'];
 
+			$listItems['itemID'][] = $subID;
 			$listItems['itemName'][] = $subName;
 			$listItems['itemPrice'][] = $subPrice;
 			$listItems['frequency'][] = formatFrequency($paymentFrequency);
+			$listItems['frequencyCount'][] = $paymentFrequencyCount;
 			$listItems['futureDate'][] = futureDate($rawPaymentDate, $paymentFrequency, $paymentFrequencyCount);
 			$listItems['countdownDays'][] = countdownDays($rawPaymentDate, $paymentFrequency, $paymentFrequencyCount);
 		} 
 
 		$countdownFromArray = $listItems['countdownDays'];
-		array_multisort($countdownFromArray, $listItems['futureDate'], $listItems['frequency'], $listItems['itemPrice'], $listItems['itemName']);
+		array_multisort($countdownFromArray, $listItems['futureDate'], $listItems['frequency'], $listItems['frequencyCount'], $listItems['itemPrice'], $listItems['itemName'], $listItems['itemID']);
+
+		echo "<table id='allSubsTable' class='toBlur' style='border-spacing: 0px 10px; text-align: left; width:100%; max-width:1200px; margin: 0px auto; font-family:sans-serif;'>
+					<tr>
+						<th>Subscription</th>
+						<th>Frequency</th>
+						<th>Next Payment Date</th>
+						<th>Countdown</th>
+						<th style='padding:0px 0px 0px 20px;'>Options</th>
+					</tr>";
 
 		foreach($countdownFromArray as $index => $countdown){
 
@@ -74,15 +78,28 @@ function viewAllSubscriptions($conn){
 				$countdown = $countdown . " days";
 			}
 
+			$sBit = "";
+			if($listItems['frequencyCount'][$index] != 1){
+				$sBit = "s";
+			}
+
 			echo "
 				<tr class='allItemsRow'>
 					<td>" . $listItems['itemName'][$index] . "</td>
-					<td>" . $listItems['itemPrice'][$index] . " / " . $listItems['frequency'][$index] . " </td>
+					<td>" . $listItems['itemPrice'][$index] . " / " . $listItems['frequencyCount'][$index] . " " . $listItems['frequency'][$index] . $sBit . " </td>
 					<td>" . $listItems['futureDate'][$index] . "</td>
 					<td>" . $countdown . "</td>
+					<td class='optionsCell' style='padding: 0px 0px 0px 20px;'> 
+						<img src='../assets/cog.png' alt='options' height='40px' class='optionsCog'> 
+						<div class='optionsDropDown'>
+							<button class='optionEdit'>Edit</button> <br>
+							<button class='optionDelete' value='" . $listItems['itemID'][$index] . "'>Delete</button>
+						</div>
+					</td>
 				</tr>
 				";
 		}
+		echo '</table>';
 	} else {
 		echo "<tr class='allItemsRow'><td>No subscriptions added yet</td> <td></td> <td></td> <td></td></tr>";
 	}
@@ -100,6 +117,7 @@ function countAllUserSubscriptions($conn){
 
 	echo $totalSubCount;
 }
+
 
 
 function futureDate($DBDate, $frequency, $frequencyCount){
@@ -154,6 +172,7 @@ function futureDate($DBDate, $frequency, $frequencyCount){
 }
 
 
+
 function countdownDays($DBDate, $frequency, $frequencyCount){
 	$rawPaymentDateForCountdown = new DateTime($DBDate);
 	$currentDate = new DateTime();
@@ -184,7 +203,7 @@ function countdownDays($DBDate, $frequency, $frequencyCount){
 			}
 			break;
 		case 5:
-			$frequencyCount = $$frequencyCount * 3;
+			$frequencyCount = $frequencyCount * 3;
 			while(strtotime($currentDate->format('Y-m-d')) >= strtotime($countdownDays->format('Y-m-d'))){
 				$countdownDays->modify("+$frequencyCount months");
 			}
@@ -381,27 +400,8 @@ class coreFunctions{
 }
 
 
-
-
 $coreFunctions = new coreFunctions();
 $coreFunctions->totalLeftToPayThisMonth($conn);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
