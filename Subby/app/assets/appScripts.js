@@ -1,6 +1,7 @@
 console.log('App scripts loaded');
 
 $(document).ready(function(){
+	//Blur background on "add item" button pressed
     $('#addBtn').click(function(){
         $('#addMenu').slideToggle({
 			start: function(){
@@ -24,6 +25,8 @@ $(document).ready(function(){
         });
     });
 
+
+	// Delete Item
 	$('.optionDelete').click(function(){
 		var itemID = $(this).val();
 
@@ -31,6 +34,39 @@ $(document).ready(function(){
 			deleteItem(itemID);
 		}
 	});
+
+
+	// Edit item
+	$('.optionEdit').click(function(){
+		var itemID = $(this).val();
+
+		$('.editScreen').fadeToggle();
+		$('.editScreen').css('display', 'flex');
+
+		$.ajax({
+			type: 'post',
+			url: 'editFunctions.php',
+			dataType: 'json',
+			data: {'action': 'viewEdit', 'subID': itemID},
+			success: function(response){
+				if(response.itemCode == 1){
+					$('#saveEditSubName').val(response.subName);
+					$('#saveEditPrice').val(response.subPrice);
+					$('#saveEditFreqCount').val(response.subFreqCount);
+					$('#saveEditFreq').val(response.subFreq);
+					$('#saveEditPaymentDate').val(response.subPaymentDate);
+					// $('#saveEditMessageBox').html(response.message); 
+					
+				}
+			}
+		});
+	});
+
+	$('.closeEditScreen').click(function(){
+		$('.editScreen').fadeOut();
+	})
+
+
 });
 
 
