@@ -27,21 +27,21 @@ $(document).ready(function(){
 
 
 	// Delete Item
-	$('.optionDelete').click(function(){
+	$(document).on('click', '.optionDelete', function(){
 		var itemID = $(this).val();
-
 		if(confirm("Are you sure you want to delete 'NAME'")){
 			deleteItem(itemID);
 		}
 	});
 
 
-	// Edit item
-	$('.optionEdit').click(function(){
+	// View Edit item
+	$(document).on('click', '.optionEdit', function(){
 		var itemID = $(this).val();
 
 		$('.editScreen').fadeToggle();
 		$('.editScreen').css('display', 'flex');
+		$('#subIDFromEditForm').val(itemID);
 
 		$.ajax({
 			type: 'post',
@@ -56,14 +56,50 @@ $(document).ready(function(){
 					$('#saveEditFreq').val(response.subFreq);
 					$('#saveEditPaymentDate').val(response.subPaymentDate);
 					// $('#saveEditMessageBox').html(response.message); 
-					
 				}
 			}
 		});
-	});
+	})
 
-	$('.closeEditScreen').click(function(){
+
+	// Save edited item
+	$(document).on('click', '.saveEditButton', function(){
+		var action = 'saveEdit';
+		var itemID = $('#subIDFromEditForm').val();
+		var itemName = $('#saveEditSubName').val();
+		var itemPrice = $('#saveEditPrice').val();
+		var itemFreqCount = $('#saveEditFreqCount').val();
+		var itemFreq = $('#saveEditFreq').val();
+		var itemPaymentDate = $('#saveEditPaymentDate').val();
+
+		$.ajax({
+			type: 'post',
+			url: 'editFunctions.php',
+			dataType: 'json',
+			data: {
+			'action': action, 
+			'getItemID': itemID, 
+			'updateSubName': itemName, 
+			'updateSubPrice': itemPrice, 
+			'updatePaymentFreq': itemFreq, 
+			'updatePaymentFreqCount': itemFreqCount, 
+			'updateDate': itemPaymentDate},
+			success: function(response){
+				if(response.itemCode == 3){
+					$('.editScreen').fadeOut();
+					$('#allSubsTable').load('listAllSubs.php');
+				}
+				if(response.itemCode == 4){
+					$('#saveEditMessageBox').html("<div class='coolBox1'>" + response.publicMessage + '</div>')
+				}
+			}
+		});
+	})
+
+
+	$(document).on('click', '.closeEditScreen', function(){
 		$('.editScreen').fadeOut();
+
 	})
 
 
@@ -100,14 +136,14 @@ function appAddNewSubscription(){
 
 		success: function(response){
 			if(response.status == "success"){
-				$("#addNewMessageBox").html("<div style='border-radius:10px; border: 1px solid rgba(33, 33, 33, 0.123); display:flex; flex-direction:column; padding: 10px; margin: 0px 0px 10px 0px;'>" + response.message + '</div>');
+				$("#addNewMessageBox").html("<div class='coolBox1'>" + response.message + '</div>');
 				if(response.itemCode == 1){
 					location.reload();
 				}
 			}
 		},
 		error: function(jqXHR, textStatus, errorThrown){
-			$("#addNewMessageBox").html("<div style='border-radius:10px; border: 1px solid rgba(33, 33, 33, 0.123); display:flex; flex-direction:column; padding: 10px; margin: 0px 0px 10px 0px;'>Something went wrong. Please try again later.</div>");
+			$("#addNewMessageBox").html("<div class='coolBox1'>Something went wrong. Please try again later.</div>");
             console.error("AJAX Error:", textStatus, errorThrown);
 		}
 	})
