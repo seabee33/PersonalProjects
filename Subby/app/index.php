@@ -1,4 +1,6 @@
-<?php require("functions.php"); loginCheck(); ?>
+<?php 
+require(__DIR__ . "/phpScripts/functions.php"); 
+loginCheck(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,9 +8,11 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title><?php name();?> / Dashboard</title>
-	<link rel="stylesheet" href="assets/appstyles.css">
+	<link rel="stylesheet" href="assets/appstyles.css?v=1">
 </head>
 <body>
+<div class="toastBox"></div>
+
 	<div class="appPage">
 
 	<?php echo $appMenu; ?>
@@ -17,10 +21,10 @@
 
 			<div class="split">
 				<div class="fontStyle1">Subscriptions Overview</div>
-				<?php require('addButton.php'); ?>
+				<?php require(__DIR__ . '/phpScripts/addButton.php'); ?>
 			</div>
 
-			<div class="row">
+			<div class="row toBlur" id='dashboard-row1'>
 
 				<div class="overviewItem">
 					Total subscriptions: <br> <?php countAllUserSubscriptions($conn); ?>
@@ -44,7 +48,9 @@
 				</div>
 
 			</div>
-			
+
+
+
 		</div>
 
 
@@ -52,5 +58,5 @@
 
 	</div>
 </body>
-<script src='assets/appScripts.js'></script>
+<script src='assets/appScripts.js?v=8'></script>
 </html>
