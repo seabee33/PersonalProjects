@@ -1,4 +1,6 @@
-<?php session_start(); ?>
+<?php 
+require (__DIR__ . '/app/phpScripts/homeProcessor.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,19 +10,24 @@
 	<meta name="description" content="Subby - Keep track of your subscriptions">
 	<meta name="keywords" content="subby, subscription tracking">
 	<link rel="icon" type="image/x-icon" href="favicon.ico">
-	<link rel="stylesheet" href="assets/styles.css">
+	<link rel="stylesheet" href="assets/styles.css?v=4">
+	<script src="assets/jq.js"></script>
+
 </head>
 <body>
 
 
-<div class="registerBox" id="registerBox">
+<div class="toastBox"></div>
+
+
+<div class="registerScreen" id="registerBox">
 	<div class="register">
 		<div>
 			<button onclick="closeRegisterWindow()" class="registerCloseButton">X</button>
 		</div>
 		<div>
 			<div>Track where your money is running away to</div><br>
-			<div>by signing up you agree to sell your soul to google, facebook etc...</div><br>
+			<div>T&C coming soon...</div><br>
 
 			<div id="registerMessages"></div><br>
 	
@@ -75,9 +82,9 @@
 	<div class="navbar" id="navbar">
 		<div class="logo"><img src="assets/logo.png" alt="Logo"></div>
 		<div class="links">
-			<a href="#home">Home</a>
-			<a href="#about">About</a>
-			<a href="#contact">Contact</a>
+			<!-- <a href="#home">Home</a> -->
+			<!-- <a href="#about">Features</a>
+			<a href="#pricing">Pricing</a> -->
 		</div>
 		<div class="actionButton" id="actionButtons">
 			<?php 
@@ -103,9 +110,33 @@
 </div>
 
 
+<div class="container centerChild">
+	<div class="row">
+		<div class="card2">
+			<img class="card2Icon" src="https://kbcollective.com.au/public/box.svg" alt="">
+			<span class="header3">Version: 24-0212-02 BETA</span>
+
+		</div>
+
+		<div class="card2">
+			<img class="card2Icon" src="https://kbcollective.com.au/public/box.svg" alt="">
+			<span class="header3">Still in development (obviously)</span>
+
+		</div>
+
+		<div class="card2">
+			<img class="card2Icon" src="https://kbcollective.com.au/public/box.svg" alt="">
+			<span class="header3">Sign up before beta ends and you will automatically be upgraded to a paid account for free </span>
+
+		</div>
+	</div>
+</div>
+
 
 
 </body>
-<script src="assets/jq.js"></script>
 <script src="assets/scripts.js"></script>
+<?php
+require(__DIR__ . '/app/phpScripts/verify.php');
+?>
 </html>
