@@ -120,7 +120,7 @@ require (__DIR__ . '/app/phpScripts/homeProcessor.php');
 
 		<div class="card2">
 			<img class="card2Icon" src="https://kbcollective.com.au/public/box.svg" alt="">
-			<span class="header3">Still in development (obviously)</span>
+			<span class="header3">Still in development</span>
 
 		</div>
 
